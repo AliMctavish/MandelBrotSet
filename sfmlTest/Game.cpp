@@ -13,8 +13,8 @@ std::vector<sf::RectangleShape> fractels;
 void Game::initVariables()
 {
 	this->window = nullptr;
-	this->x = -1;
-	this->c = x;
+	this->z = 0;
+	this->c = 0.1;
 }
 
 
@@ -62,6 +62,21 @@ void Game::pollEvents()
 void Game::Update()
 {
 	this->pollEvents();
+	this->updateFractels();
+}
+
+
+void Game::updateFractels()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		z++;
+		sf::RectangleShape rect;
+		rect.setFillColor(sf::Color::White);
+		rect.setSize(sf::Vector2f(2, 2));
+		rect.setPosition(z + 200, z ^ 2 * (300 - z));
+		fractels.push_back(rect);
+	}
 }
 
 
@@ -77,15 +92,7 @@ void Game::Update()
 void Game::render()
 {
 	this->window->clear();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		x++;
-		sf::RectangleShape rect;
-		rect.setFillColor(sf::Color::White);
-		rect.setSize(sf::Vector2f(2,2));
-		rect.setPosition(x + 200, x ^ 2 * (300 - x));
-		fractels.push_back(rect);
-	}
+	
 
 	for (auto& fract : fractels)
 	{

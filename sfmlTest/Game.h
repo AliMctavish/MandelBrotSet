@@ -11,7 +11,8 @@ public:
 	void initVariables();
 	void initWindow();
 	void renderCube();
-	int x , y , c;
+	void updateFractels();
+	int z , y , c;
 
 
 	sf::VideoMode videoMode;
