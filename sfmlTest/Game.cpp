@@ -13,7 +13,8 @@ std::vector<sf::RectangleShape> fractels;
 void Game::initVariables()
 {
 	this->window = nullptr;
-	this->x = 200;
+	this->x = -1;
+	this->c = x;
 }
 
 
@@ -78,10 +79,11 @@ void Game::render()
 	this->window->clear();
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
+		x++;
 		sf::RectangleShape rect;
 		rect.setFillColor(sf::Color::White);
 		rect.setSize(sf::Vector2f(2,2));
-		rect.setPosition(x/2,(x = x^2 + x)/2);
+		rect.setPosition(x + 200, x ^ 2 * (300 - x));
 		fractels.push_back(rect);
 	}
 

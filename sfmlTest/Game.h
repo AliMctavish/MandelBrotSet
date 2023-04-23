@@ -11,7 +11,7 @@ public:
 	void initVariables();
 	void initWindow();
 	void renderCube();
-	int x , y;
+	int x , y , c;
 
 
 	sf::VideoMode videoMode;
@@ -33,7 +33,6 @@ public :
 	void pollEvents();
 
 
-	float function(float x);
 
 
 	void Update();
