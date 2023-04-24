@@ -12,10 +12,13 @@ public:
 	void initWindow();
 	void renderCube();
 	void updateFractels();
-	int z , y , c;
+	int y;
+	float c , z;
 
 
 	sf::VideoMode videoMode;
+	sf::RectangleShape center;
+	sf::Vector2f zValue;
 	sf::Event ev; 
 
 public :
@@ -32,6 +35,9 @@ public :
 
 	//functions
 	void pollEvents();
+
+
+	void CenterOfObjects();
 
 
 

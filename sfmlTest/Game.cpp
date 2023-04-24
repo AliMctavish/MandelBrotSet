@@ -5,6 +5,7 @@
 
 
 std::vector<sf::RectangleShape> fractels;
+std::vector<sf::RectangleShape> zRectVector;
 
 
 
@@ -13,10 +14,19 @@ std::vector<sf::RectangleShape> fractels;
 void Game::initVariables()
 {
 	this->window = nullptr;
+	this->zValue.x = 0;
+	this->zValue.y = 0;
 	this->z = 0;
-	this->c = 0.1;
+	this->c = 1;
 }
 
+
+void Game::CenterOfObjects()
+{
+	this->center.setPosition(sf::Vector2f(1600/2, 1000/2));
+	this->center.setFillColor(sf::Color::Red);
+	this->center.setSize(sf::Vector2f(1, 1));
+}
 
 
 void Game::initWindow()
@@ -40,6 +50,7 @@ Game::Game()
 {
 	this->initVariables();
 	this->initWindow();
+	this->CenterOfObjects();
 }
 
 Game::~Game()
@@ -70,13 +81,49 @@ void Game::updateFractels()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		z++;
+		z = z * z + c;
 		sf::RectangleShape rect;
-		rect.setFillColor(sf::Color::White);
+		sf::RectangleShape zRect;
+		//rect.setFillColor(sf::Color::White);
+		//zRect.setFillColor(sf::Color::Red);
 		rect.setSize(sf::Vector2f(2, 2));
-		rect.setPosition(z + 200, z ^ 2 * (300 - z));
+		zRect.setSize(sf::Vector2f(2, 2));
+		//rect.setPosition(1600/2  + z, 1000 / 2 + c);
+		zRect.setPosition(1600/2 + c , 1000 / 2 + c);
+		
+		if (z >= 2)
+		{
+			zRect.setFillColor(sf::Color::Blue);
+			z = 0;
+			c = 0;
+		}
+		if (z < 2)
+		{
+			zRect.setFillColor(sf::Color::Yellow);
+		}
+		std::cout << "z = " << z << std::endl;
+		std::cout << "c = " << c << std::endl;
 		fractels.push_back(rect);
+		zRectVector.push_back(zRect);
 	}
+	
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		z = 0;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+	{
+		c += 0.1;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+	{
+		c -= 0.1;
+	}
+
+	
+
+
+
 }
 
 
@@ -93,13 +140,22 @@ void Game::render()
 {
 	this->window->clear();
 	
-
+	for (auto& zrects : zRectVector)
+	{
+		this->window->draw(zrects);
+	}
 	for (auto& fract : fractels)
 	{
 		this->window->draw(fract);
 	}
 
 
+	
+
+
+
+	this->window->draw(this->center);
+ 
 	this->window->display();
 }
 
