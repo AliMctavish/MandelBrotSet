@@ -1,11 +1,12 @@
 #include "Game.h"
 #include <vector>
+#include <random>
 
 
 
 
-std::vector<sf::RectangleShape> fractels;
 std::vector<sf::RectangleShape> zRectVector;
+std::random_device rnd;
 
 
 
@@ -14,10 +15,13 @@ std::vector<sf::RectangleShape> zRectVector;
 void Game::initVariables()
 {
 	this->window = nullptr;
+	this->iteration = 1000;
 	this->zValue.x = 0;
 	this->zValue.y = 0;
-	this->z = 0;
-	this->c = 1;
+	this->z.x = 0;
+	this->z.y = 0;
+	this->c.x = 0.1;
+	this->c.y = 0;
 }
 
 
@@ -79,45 +83,75 @@ void Game::Update()
 
 void Game::updateFractels()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	for(int i =0 ; i < 100; i ++)
 	{
-		z = z * z + c;
-		sf::RectangleShape rect;
+		std::uniform_real_distribution<float> dist(-4,4);
+	
+		this->iteration--;
+		z = sf::Vector2f(z.x * z.x - z.y * z.y, (2 * z.x * z.y)) + sf::Vector2f(c.x , c.y);
 		sf::RectangleShape zRect;
-		//rect.setFillColor(sf::Color::White);
-		//zRect.setFillColor(sf::Color::Red);
-		rect.setSize(sf::Vector2f(2, 2));
-		zRect.setSize(sf::Vector2f(2, 2));
-		//rect.setPosition(1600/2  + z, 1000 / 2 + c);
-		zRect.setPosition(1600/2 + c , 1000 / 2 + c);
-		
-		if (z >= 2)
+		zRect.setSize(sf::Vector2f(1,1));
+		if (z.x > 1 || z.y > 1)
+		{
+			c.x = dist(rnd);
+			c.y = dist(rnd);
+			z.x = 0;
+			z.y = 0;
+		}
+
+		if (this->iteration == 0)
 		{
 			zRect.setFillColor(sf::Color::Blue);
-			z = 0;
-			c = 0;
+			zRect.setPosition(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500);
+			zRectVector.push_back(zRect);
+			this->iteration = 100;
+			c.x = dist(rnd);
+			c.y = dist(rnd);
 		}
-		if (z < 2)
+		if (this->iteration > 20)
 		{
-			zRect.setFillColor(sf::Color::Yellow);
+			zRect.setFillColor(sf::Color::Blue);
+			zRect.setPosition(sf::Vector2f(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500));
+			zRectVector.push_back(zRect);
 		}
-		std::cout << "z = " << z << std::endl;
-		std::cout << "c = " << c << std::endl;
-		fractels.push_back(rect);
+		if (this->iteration > 50)
+		{
+			zRect.setFillColor(sf::Color::Red);
+			zRect.setPosition(sf::Vector2f(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500));
+			zRectVector.push_back(zRect);
+		}
+		if (this->iteration > 80)
+		{
+			zRect.setFillColor(sf::Color::White);
+			zRect.setPosition(sf::Vector2f(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500));
+			zRectVector.push_back(zRect);
+		}
+		if (this->iteration == 100)
+		{
+		zRect.setFillColor(sf::Color::White);
+		zRect.setPosition(sf::Vector2f(1600/2 * z.x + 1200, 1000/2 * z.y + 500));
 		zRectVector.push_back(zRect);
+		}
+	    //c.x = 0.01;
+	
+		std::cout << "c.x = " << c.x << " " << "c.y = " << c.y << std::endl;
+		std::cout << "z.x = " << z.x << " " << "z.y = " << z.y << std::endl;
 	}
 	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		z = 0;
+		z.x = 0;
+		z.y = 0;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 	{
-		c += 0.1;
+		c.x += 1;
+		c.y += 1;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
 	{
-		c -= 0.1;
+		c.x -= 0.1;
+		c.y -= 0.1;
 	}
 
 	
@@ -144,14 +178,6 @@ void Game::render()
 	{
 		this->window->draw(zrects);
 	}
-	for (auto& fract : fractels)
-	{
-		this->window->draw(fract);
-	}
-
-
-	
-
 
 
 	this->window->draw(this->center);

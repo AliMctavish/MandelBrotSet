@@ -13,7 +13,9 @@ public:
 	void renderCube();
 	void updateFractels();
 	int y;
-	float c , z;
+	int iteration;
+	sf::Vector2f z;
+	sf::Vector2f c;
 
 
 	sf::VideoMode videoMode;
