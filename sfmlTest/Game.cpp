@@ -83,6 +83,9 @@ void Game::Update()
 
 void Game::updateFractels()
 {
+	for (int j = 0; j < 100; j++)
+	{
+
 	for(int i =0 ; i < 100; i ++)
 	{
 		std::uniform_real_distribution<float> dist(-4,4);
@@ -101,22 +104,22 @@ void Game::updateFractels()
 
 		if (this->iteration == 0)
 		{
-			zRect.setFillColor(sf::Color::Blue);
+			zRect.setFillColor(sf::Color::White);
 			zRect.setPosition(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500);
 			zRectVector.push_back(zRect);
-			this->iteration = 100;
+			this->iteration = 1000;
 			c.x = dist(rnd);
 			c.y = dist(rnd);
 		}
 		if (this->iteration > 20)
 		{
-			zRect.setFillColor(sf::Color::Blue);
+			zRect.setFillColor(sf::Color::White);
 			zRect.setPosition(sf::Vector2f(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500));
 			zRectVector.push_back(zRect);
 		}
 		if (this->iteration > 50)
 		{
-			zRect.setFillColor(sf::Color::Red);
+			zRect.setFillColor(sf::Color::White);
 			zRect.setPosition(sf::Vector2f(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500));
 			zRectVector.push_back(zRect);
 		}
@@ -137,7 +140,8 @@ void Game::updateFractels()
 		std::cout << "c.x = " << c.x << " " << "c.y = " << c.y << std::endl;
 		std::cout << "z.x = " << z.x << " " << "z.y = " << z.y << std::endl;
 	}
-	
+	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		z.x = 0;
