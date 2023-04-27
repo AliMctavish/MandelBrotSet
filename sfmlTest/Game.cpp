@@ -15,7 +15,7 @@ std::random_device rnd;
 void Game::initVariables()
 {
 	this->window = nullptr;
-	this->iteration = 1000;
+	this->iteration = 100;
 	this->zValue.x = 0;
 	this->zValue.y = 0;
 	this->z.x = 0;
@@ -30,6 +30,7 @@ void Game::CenterOfObjects()
 	this->center.setPosition(sf::Vector2f(1600/2, 1000/2));
 	this->center.setFillColor(sf::Color::Red);
 	this->center.setSize(sf::Vector2f(1, 1));
+	
 }
 
 
@@ -83,18 +84,18 @@ void Game::Update()
 
 void Game::updateFractels()
 {
-	for (int j = 0; j < 100; j++)
+	
+
+	for (int i = 0; i < 5000000; i++)
 	{
 
-	for(int i =0 ; i < 100; i ++)
-	{
-		std::uniform_real_distribution<float> dist(-4,4);
-	
+
+		std::uniform_real_distribution<float> dist(-2, 1);
+
 		this->iteration--;
-		z = sf::Vector2f(z.x * z.x - z.y * z.y, (2 * z.x * z.y)) + sf::Vector2f(c.x , c.y);
-		sf::RectangleShape zRect;
-		zRect.setSize(sf::Vector2f(1,1));
-		if (z.x > 1 || z.y > 1)
+		z = sf::Vector2f(z.x * z.x - z.y * z.y, (2 * z.x * z.y)) + c;
+
+		if (z.x > 3 || z.y > 3)
 		{
 			c.x = dist(rnd);
 			c.y = dist(rnd);
@@ -102,45 +103,51 @@ void Game::updateFractels()
 			z.y = 0;
 		}
 
+		
+
 		if (this->iteration == 0)
 		{
-			zRect.setFillColor(sf::Color::White);
-			zRect.setPosition(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500);
-			zRectVector.push_back(zRect);
 			this->iteration = 1000;
+		}
+
+		if (this->iteration == 500)
+		{
+			sf::RectangleShape zRect;
+			zRect.setSize(sf::Vector2f(1, 1));
+			zRect.setFillColor(sf::Color::White);
+			zRect.setPosition(1600 / 2 * c.x + 1200, 1000 / 2 * c.y + 500);
+			zRectVector.push_back(zRect);
 			c.x = dist(rnd);
 			c.y = dist(rnd);
 		}
-		if (this->iteration > 20)
+		if (this->iteration == 50)
 		{
-			zRect.setFillColor(sf::Color::White);
-			zRect.setPosition(sf::Vector2f(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500));
+			sf::RectangleShape zRect;
+			zRect.setSize(sf::Vector2f(1, 1));
+			zRect.setFillColor(sf::Color::Blue);
+			zRect.setPosition(1600 / 2 * c.x + 1200, 1000 / 2 * c.y + 500);
 			zRectVector.push_back(zRect);
+			c.x = dist(rnd);
+			c.y = dist(rnd);
 		}
-		if (this->iteration > 50)
-		{
-			zRect.setFillColor(sf::Color::White);
-			zRect.setPosition(sf::Vector2f(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500));
-			zRectVector.push_back(zRect);
-		}
-		if (this->iteration > 80)
-		{
-			zRect.setFillColor(sf::Color::White);
-			zRect.setPosition(sf::Vector2f(1600 / 2 * z.x + 1200, 1000 / 2 * z.y + 500));
-			zRectVector.push_back(zRect);
-		}
-		if (this->iteration == 100)
-		{
-		zRect.setFillColor(sf::Color::White);
-		zRect.setPosition(sf::Vector2f(1600/2 * z.x + 1200, 1000/2 * z.y + 500));
-		zRectVector.push_back(zRect);
-		}
-	    //c.x = 0.01;
 	
+		if (this->iteration == 1000)
+		{
+			sf::RectangleShape zRect;
+			zRect.setSize(sf::Vector2f(1, 1));
+			zRect.setFillColor(sf::Color::White);
+			zRect.setPosition(1600 / 2 * c.x + 1200, 1000 / 2 * c.y + 500);
+			zRectVector.push_back(zRect);
+			c.x = dist(rnd);
+			c.y = dist(rnd);
+		}
+		
+	}
+		
 		std::cout << "c.x = " << c.x << " " << "c.y = " << c.y << std::endl;
 		std::cout << "z.x = " << z.x << " " << "z.y = " << z.y << std::endl;
-	}
-	}
+	
+	
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
