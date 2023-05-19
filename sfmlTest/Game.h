@@ -12,6 +12,8 @@ public:
 	void initWindow();
 	void renderCube();
 	void updateFractels();
+	int increaseLoL;
+	
 	int y;
 	int iteration;
 	sf::Vector2f z;
